@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إرسال الهجمات إلى المزارع</title>
+    <script src="https://s1.x-tatar.com/assets/farm.js?1"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .farm-inputs {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .farm-inputs input {
+            width: 100px;
+            padding: 5px;
+            margin: 10px;
+        }
+        .unit-img {
+            width: 40px;
+            height: 40px;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        #loading {
+            width: 0%;
+            height: 10px;
+            background-color: #ff0000;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>إرسال الهجمات إلى المزارع</h1>
+
+        <!-- مزارع الإدخال -->
+        <div class="farm-inputs">
+            <div>
+                <label for="t21">الكتيبة:</label>
+                <img class="unit-img" src="https://s1.x-tatar.com/assets/x.gif" alt="الكتيبه">
+                <input type="number" id="t21" name="t[21]" placeholder="عدد القوات">
+            </div>
+            <div>
+                <label for="t22">مبارز:</label>
+                <img class="unit-img" src="https://s1.x-tatar.com/assets/x.gif" alt="مبارز">
+                <input type="number" id="t22" name="t[22]" placeholder="عدد القوات">
+            </div>
+            <div>
+                <label for="t24">رعد الإغريق:</label>
+                <img class="unit-img" src="https://s1.x-tatar.com/assets/x.gif" alt="رعد الإغريق">
+                <input type="number" id="t24" name="t[24]" placeholder="عدد القوات">
+            </div>
+            <div>
+                <label for="t25">فرسان السلت:</label>
+                <img class="unit-img" src="https://s1.x-tatar.com/assets/x.gif" alt="فرسان السلت">
+                <input type="number" id="t25" name="t[25]" placeholder="عدد القوات">
+            </div>
+            <div>
+                <label for="t26">فرسان الهيدوانر:</label>
+                <img class="unit-img" src="https://s1.x-tatar.com/assets/x.gif" alt="فرسان الهيدوانر">
+                <input type="number" id="t26" name="t[26]" placeholder="عدد القوات">
+            </div>
+        </div>
+
+        <!-- إرسال الهجوم -->
+        <button class="btn" onclick="sendAttack()">إرسال الهجوم</button>
+        
+        <!-- شريط تحميل الهجوم -->
+        <div id="loading"></div>
+
+        <!-- رسالة التأكيد -->
+        <div id="farming" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        // دالة لإرسال الهجوم
+        function sendAttack() {
+            // جمع بيانات القوات المدخلة
+            var farmData = {
+                't[21]': document.getElementById('t21').value,
+                't[22]': document.getElementById('t22').value,
+                't[24]': document.getElementById('t24').value,
+                't[25]': document.getElementById('t25').value,
+                't[26]': document.getElementById('t26').value
+            };
+
+            // بداية عملية الإرسال
+            document.getElementById('farming').innerHTML = 'تم إرسال الهجوم إلى المزارع...';
+            document.getElementById('loading').style.width = '0%';
+
+            // دالة إرسال الطلب
+            $.ajax({
+                url: 'https://s1.x-tatar.com/assets/farm.js?1', // رابط السيرفر
+                method: 'POST',
+                data: farmData,
+                success: function(response) {
+                    document.getElementById('farming').innerHTML = 'تم إرسال جميع البيانات بنجاح.';
+                    document.getElementById('loading').style.width = '100%';
+                },
+                error: function() {
+                    document.getElementById('farming').innerHTML = 'فشل إرسال البيانات. حاول مرة أخرى.';
+                    document.getElementById('loading').style.width = '0%';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
