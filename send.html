@@ -1,44 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إرسال الهجوم</title>
-    <!-- إضافة مكتبة jQuery -->
+    <!-- تحميل مكتبة jQuery من CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body>
+<body style="background-color: #f0f0f0; font-family: Arial, sans-serif; text-align: center;">
 
-    <!-- زر إرسال الهجوم -->
-    <button onclick="sendAttack()">إرسال الهجوم</button>
-    
-    <!-- إضافة ملف farm.js -->
-    <script src="https://s1.x-tatar.com/assets/farm.js?1"></script>
-    
+    <h2>إرسال الهجوم إلى قرية جديدة</h2>
+    <form id="attackForm">
+        <label for="troopAmount">أدخل عدد الجنود:</label><br>
+        <input type="number" id="troopAmount" name="troopAmount" value="1" min="1"><br><br>
+
+        <!-- قائمة القوات المتاحة -->
+        <label for="unitType">اختر نوع القوات:</label><br>
+        <select id="unitType" name="unitType">
+            <option value="21">كتيبة</option>
+            <option value="22">مبارز</option>
+            <option value="24">رعد الإغريق</option>
+            <option value="25">فرسان السلت</option>
+            <option value="26">فرسان الهيدوانر</option>
+        </select><br><br>
+
+        <button type="button" onclick="sendAttack()">إرسال الهجوم</button>
+    </form>
+
+    <div id="statusMessage" style="margin-top: 20px;"></div>
+
     <script>
-        // تعريف دالة sendAttack بعد تحميل jQuery و farm.js
+        // الدالة التي ترسل الهجوم
         function sendAttack() {
-            console.log('إرسال الهجوم...');
-            // تأكد من إضافة الكود الخاص بك هنا لإرسال الهجوم باستخدام farm.js أو أي إجراءات أخرى
-            // مثال على إرسال الهجوم باستخدام بيانات خاصة:
+            var troopAmount = document.getElementById("troopAmount").value;
+            var unitType = document.getElementById("unitType").value;
             
-            var attackData = {
-                id: "123",  // استخدم معرف القرية
-                c: "4",     // قيمة إضافية
-                tro: "100", // العدد المرسل من القوات (كمثال)
-                farm: "1"   // تحديد العملية كـ "هجوم"
+            // رسالة البداية
+            document.getElementById('statusMessage').innerHTML = 'إرسال الهجوم...';
+            
+            // بناء البيانات لإرسالها عبر AJAX
+            var postData = {
+                'troopAmount': troopAmount,
+                'unitType': unitType
             };
 
-            // تأكد من استخدام الكود المناسب لإرسال البيانات عبر AJAX أو طرق أخرى
-            post_to_url("S?U=5", attackData);
-        }
-
-        // دالة post_to_url لإرسال البيانات عبر AJAX
-        function post_to_url(path, params) {
-            $.post(path, params).done(function(response) {
-                console.log("تم إرسال الهجوم بنجاح: ", response);
-            }).fail(function(xhr, status, error) {
-                console.error("فشل إرسال الهجوم: ", status, error);
+            // إرسال الطلب عبر AJAX
+            $.ajax({
+                url: 'https://s1.x-tatar.com/farm',  // تأكد من رابط السيرفر المناسب
+                method: 'POST',
+                data: postData,
+                success: function(response) {
+                    // في حالة النجاح
+                    document.getElementById('statusMessage').innerHTML = 'تم إرسال الهجوم بنجاح!';
+                },
+                error: function() {
+                    // في حالة الفشل
+                    document.getElementById('statusMessage').innerHTML = 'فشل إرسال الهجوم!';
+                }
             });
         }
     </script>
