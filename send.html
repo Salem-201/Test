@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إرسال الهجوم</title>
-    <!-- تحميل مكتبة jQuery من CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body style="background-color: #f0f0f0; font-family: Arial, sans-serif; text-align: center;">
 
     <h2>إرسال الهجوم إلى قرية جديدة</h2>
-    <form id="attackForm">
+    
+    <!-- نموذج إرسال الهجوم -->
+    <form id="attackForm" method="post" action="https://s1.x-tatar.com/bulid" target="_blank">
         <label for="troopAmount">أدخل عدد الجنود:</label><br>
         <input type="number" id="troopAmount" name="troopAmount" value="1" min="1"><br><br>
 
@@ -24,41 +25,29 @@
             <option value="26">فرسان الهيدوانر</option>
         </select><br><br>
 
-        <button type="button" onclick="sendAttack()">إرسال الهجوم</button>
+        <button type="submit">إرسال الهجوم</button>
     </form>
 
     <div id="statusMessage" style="margin-top: 20px;"></div>
 
     <script>
         // الدالة التي ترسل الهجوم
-        function sendAttack() {
+        document.getElementById("attackForm").onsubmit = function() {
             var troopAmount = document.getElementById("troopAmount").value;
             var unitType = document.getElementById("unitType").value;
             
             // رسالة البداية
             document.getElementById('statusMessage').innerHTML = 'إرسال الهجوم...';
-            
-            // بناء البيانات لإرسالها عبر AJAX
-            var postData = {
-                'troopAmount': troopAmount,
-                'unitType': unitType
-            };
 
-            // إرسال الطلب عبر AJAX
-            $.ajax({
-                url: 'https://s1.x-tatar.com/farm',  // تأكد من رابط السيرفر المناسب
-                method: 'POST',
-                data: postData,
-                success: function(response) {
-                    // في حالة النجاح
-                    document.getElementById('statusMessage').innerHTML = 'تم إرسال الهجوم بنجاح!';
-                },
-                error: function() {
-                    // في حالة الفشل
-                    document.getElementById('statusMessage').innerHTML = 'فشل إرسال الهجوم!';
-                }
-            });
-        }
+            // هنا نضبط القيم لتتمكن من إرسالها بالشكل الصحيح مع الطلب
+            var formData = new FormData();
+            formData.append("troopAmount", troopAmount);
+            formData.append("unitType", unitType);
+
+            // إرسال الطلب عبر AJAX أو POST مباشرة باستخدام النموذج
+            // نموذج POST يتم تفعيله مباشرة عند إرسال البيانات
+            return true; // سيتم إرسال النموذج كما هو
+        };
     </script>
 
 </body>
