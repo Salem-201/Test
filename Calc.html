@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-74PGK3MG17"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-74PGK3MG17"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-74PGK3MG17', {
+  // الإعداد الأساسي
+  gtag('config', 'G-74PGK3MG17');
+
+  // إرسال بيانات الحملة والمصدر يدويًا
+  gtag('event', 'page_view', {
     campaign: 'tcalc',
     source: 'github',
     medium: 'web'
   });
 </script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <title>حاسبة تكلفة الجندي</title>
